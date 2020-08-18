@@ -4,7 +4,7 @@ let name = "Shun";
 
 name = "Shimono";
 
-let nickname = "ham" as const;
+let nickname = "ham" as string;
 nickname = "ham";
 
 let profile = {

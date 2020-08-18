@@ -5,7 +5,7 @@ interface profile {
   [index: string]: string | number | boolean;
 }
 
-let profile: profile = { name: "hum", underTwenty: false };
+let profile: profile = { name: 1, underTwenty: false };
 
 profile.name = "hum";
 profile.age = 43;
