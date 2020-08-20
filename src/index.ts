@@ -110,6 +110,7 @@ const promise = () => {
 // 実行時に型を決める事が可能な仕組み
 // 「T」に入るのは基本型とオブジェクト型である
 //! 配列は型ではないので注意
+// ArrayはTSで用意されている独自の型
 
 function Generics0<T>(args: T): T {
   return args;
@@ -133,3 +134,80 @@ interface Origin<T> {
 }
 
 const shimono: Origin<string> = { name: "shun" };
+
+//!　独自宣言
+{
+  type Type<T> = T;
+  interface ItF<T> {
+    name: T;
+  }
+}
+
+//! 関数宣言
+{
+  //　関数宣言ジェネリクス型
+  function Fn1<T>(args: T): T {
+    return args;
+  }
+  // 関数宣言基本型
+  function Fn2(args: any): any {
+    return args;
+  }
+}
+
+//! 関数式
+{
+  //　関数式ジェネリクス型MAX指定
+  const App1: <T>(args: T) => T = <T>(args: T): T => {
+    return args;
+  };
+
+  //　関数式ジェネリクス型推奨指定
+  const App2: <T>(args: T) => T = (args) => {
+    return args;
+  };
+
+  {
+    //　関数式基本型MAX指定
+    const Inx1: (args: any) => any = (args: any): any => {
+      return args;
+    };
+
+    //　関数式基本型推奨指定
+    const Inx2 = (args: any): any => {
+      return args;
+    };
+  }
+}
+
+//! クラス式
+{
+  //　ジェネリクス型
+  class App1<T> {
+    constructor(public name: T) {}
+  }
+  //　基本型
+  class App2 {
+    constructor(public name: any) {}
+  }
+}
+
+//! 応用
+{
+  type Type<T> = T;
+  const obj: Type<number> = 1;
+  type PropsTypes<T, S> = {
+    name: T;
+    age: S;
+  };
+  const props: PropsTypes<string, number> = {
+    name: "ShimonoShun",
+    age: 24,
+  };
+  const App1 = <T, S>({ name, age }: PropsTypes<string, number>): void => {
+    console.log({ name });
+    console.log({ age });
+  };
+
+  console.log(App1<string, number>(props));
+}
