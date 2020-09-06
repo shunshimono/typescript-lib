@@ -115,12 +115,12 @@ const promise = () => {
 function Generics0<T>(args: T): T {
   return args;
 }
-console.log(Generics0<number>(1));
-console.log(Generics0<string>("shun"));
+// console.log(Generics0<number>(1));
+// console.log(Generics0<string>("shun"));
 
 //? こういう場合どうする？？
 function Generics1<T>(...args: T[]): T[] {
-  console.log(args.length);
+  // console.log(args.length);
   return args;
 }
 
@@ -205,9 +205,19 @@ const shimono: Origin<string> = { name: "shun" };
     age: 24,
   };
   const App1 = <T, S>({ name, age }: PropsTypes<string, number>): void => {
-    console.log({ name });
-    console.log({ age });
+    // console.log({ name });
+    // console.log({ age });
   };
 
-  console.log(App1<string, number>(props));
+  // console.log(App1<string, number>(props));
 }
+
+const proimse = () => {
+  return new Promise((resolve) => {
+    resolve(42)
+  });
+};
+
+promise().then(data => {
+  console.log(data)
+})
