@@ -85,7 +85,7 @@ let strLength: number = (someValue as string).length;
  * 列挙型
  */
 enum Direction {
-  Up, // 0
+  Up,
   Down, // 1
   Left, // 2
   Right, // 3
