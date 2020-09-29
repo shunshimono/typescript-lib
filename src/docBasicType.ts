@@ -22,7 +22,7 @@ let myColor: string = `my color is ${color}`;
 
 /**
  * array型
- * 要素の型とそれに続くブランケットを使用 || 基底の型であるArray型を使用
+ * 要素の型とそれに続くブランケット[]を使用 || 基底の型であるArray型を使用
  */
 let list: number[] = [1, 2, 3];
 let myList: Array<number> = [1, 2, 3];
@@ -78,3 +78,34 @@ function error(): never {
  */
 let objectBrace: {}; //型制約無効
 let objectType: object;
+
+let nameLength: any = "shun";
+(nameLength as string).length;
+(nameLength as "shun").length;
+
+const action = () => ({ type: "INCREMENT" } as const);
+
+// 右オペランドが評価された後に、右オペランドに代入するので意味がないパターン
+let As: any = "shun" as string;
+// let As: any
+
+type MyObjectTypes = {
+  name: string;
+  [K: string]: number | string;
+};
+
+const MyObject: MyObjectTypes = {
+  name: "shun",
+  age: 24,
+};
+
+type PersonData = "name" | "age" | "sex";
+type Human = {
+  [K in PersonData]: string | number;
+};
+
+let manData: Human = {
+  name: "shun",
+  age: 24,
+  sex: "men",
+};

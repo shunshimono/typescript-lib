@@ -36,7 +36,7 @@ let numberOrString: (string | number)[];
 numberOrString = [1, "1"];
 
 /**
- * Literal Types(文字列リテラル)
+ * Literal Types(リテラル)
  * 正確な値の型をしてるすることができる
  */
 let myName: "shun";
@@ -63,7 +63,7 @@ type someType = {
   baz: string;
 };
 
-let someKey: keyof someType;
+let someKey: keyof someType; // let someKey: "foo" | "bar" | "baz"
 
 const myObj = {
   foo: "foo",
@@ -90,3 +90,73 @@ enum Direction {
   Left, // 2
   Right, // 3
 }
+
+//　競合しない
+type Test = {};
+const Test = {};
+namespace Test {
+  export interface User {}
+}
+
+// オーバーロードしない
+interface User {
+  name: string;
+}
+interface User {}
+
+// 型引数ととして受け取ることが可能な値を指定できる
+// 初期値の省略は不可能
+interface Box<T extends string | number> {
+  value: T;
+}
+
+// 初期値が振られていれば、型引数を省略可能
+// const box0: Box = { value: "test" }; // OK
+
+const box1: Box<string> = { value: "test" }; // OK
+
+// 型 'string' を型 'number' に割り当てることはできません。
+// const box2: Box<number> = { value: "test" }; // ERROR
+
+const boxed0 = <T>(props: T) => ({ value: props });
+function boxed1<T>(props: T) {
+  return {
+    value: props,
+  };
+}
+
+// 型引数を省略しても、型推論の結果を得ることが可能
+const myBox0 = boxed0("test");
+const myBox1 = boxed0(1);
+const myBox2 = boxed0(null);
+
+interface Props {
+  amount: number;
+}
+
+const boxed2 = <T extends Props>(props: T) => ({
+  value: props.amount.toFixed(1),
+});
+
+type Str = string;
+
+/**
+ * 1.引数(obj,'name')を受け取りpick関数が呼ばれる
+ * 2.型引数のTにobjが入る
+ * 3.keyofによりKにTのプロパティのStringLiteralTypesが適用される
+ * 4.Kは　name or age or sex　しか受けつかなくなる
+ */
+const pick = <T, K extends keyof T>(props: T, key: K) => {
+  console.log(key);
+  console.log(props);
+};
+
+const obj = {
+  name: "shun",
+  age: 24,
+  sex: "men",
+};
+
+const value1 = pick(obj, "name");
+console.log(value1);
+// shun

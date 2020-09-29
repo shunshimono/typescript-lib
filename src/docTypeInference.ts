@@ -11,13 +11,13 @@ let name = "shun";
  * arrayの型推論
  */
 const a1 = [1, 0];
-const a2 = [1 as 1, 0 as 0];
+const a2 = [1 as 1, 0 as 0]; // asをつけることにより、Literal Typesとなる
 let a3 = [1 as 1, 0 as 0];
 
 /**
  * Tupleの型推論
  */
-const t1 = [1, 2] as [number, number];
+const t1 = [1, 2] as [number, number]; // 値の順序を制約することができる
 t1.push(3);
 
 /**
