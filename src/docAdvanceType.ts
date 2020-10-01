@@ -138,7 +138,9 @@ const boxed2 = <T extends Props>(props: T) => ({
   value: props.amount.toFixed(1),
 });
 
-type Str = string;
+type Str = {
+  name: string;
+};
 
 /**
  * 1.引数(obj,'name')を受け取りpick関数が呼ばれる
@@ -146,10 +148,7 @@ type Str = string;
  * 3.keyofによりKにTのプロパティのStringLiteralTypesが適用される
  * 4.Kは　name or age or sex　しか受けつかなくなる
  */
-const pick = <T, K extends keyof T>(props: T, key: K) => {
-  console.log(key);
-  console.log(props);
-};
+const pick = <T, K extends keyof T>(props: T, key: K) => {};
 
 const obj = {
   name: "shun",
@@ -158,5 +157,76 @@ const obj = {
 };
 
 const value1 = pick(obj, "name");
-console.log(value1);
 // shun
+
+interface boo extends Str {
+  age: number;
+}
+const Shun: boo = {
+  name: "shun",
+  age: 24,
+};
+
+// interfaceの継承
+interface IPoint2D {
+  x: number;
+  y: number;
+}
+interface IPoint3D extends IPoint2D {
+  z: number;
+}
+
+// typeの継承もどき
+type TPoint2D = {
+  x: number;
+  y: number;
+};
+type TPoint3D = TPoint2D & {
+  z: number;
+};
+
+// OK: TypeがInterfaceを継承
+type TIPoint3D = IPoint2D & {
+  z: number;
+};
+
+// OK: InterfaceがTypeを継承
+interface ITPoint3D extends TPoint2D {
+  z: number;
+}
+
+const num: TIPoint3D = {
+  x: 1,
+  y: 2,
+  z: 3,
+};
+
+// type IsString<T> = T extends string ? true : false;
+// type x = IsString<"test">; //type x = true
+// type y = IsString<0>; //type y = false
+
+interface Properties {
+  name: string;
+  age: number;
+  flg: boolean;
+}
+
+type IsType<T, U> = {
+  [K in keyof T]: T[K] extends U ? true : false;
+};
+
+type IsString = IsType<Properties, string>;
+// type IsString = {
+//   name: true;
+//   age: false;
+//   flg: false;
+// }
+
+type Filter<T, U> = {
+  [K in keyof T]: T[K] extends U ? K : never;
+}[keyof T];
+
+type StringKeys<T> = Filter<T, string>;
+// type StringKeys = "name"
+
+type Strings = Pick<Properties, StringKeys<Properties>>;
